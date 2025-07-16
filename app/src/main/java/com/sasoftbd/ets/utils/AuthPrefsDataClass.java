@@ -15,12 +15,6 @@ public class AuthPrefsDataClass {
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
 
-//    private SqliteDbHelper dbHelper;
-//    List<LoginModel> status = new ArrayList<>();
-//    LoginModel model;
-
-
-
 
     // Constructor
     public AuthPrefsDataClass(Context context) {

@@ -51,6 +51,14 @@
             </intent-filter>
         </activity>
 
+
+        <activity
+            android:name=".activites.attendance.AttendanceActivity"
+            android:exported="false">
+
+        </activity>
+
+
         <service
             android:name=".latlong.LocationService"
             android:enabled="true"
