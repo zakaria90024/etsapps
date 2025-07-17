@@ -53,6 +53,7 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.LocationSettingsStates;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -64,7 +65,10 @@ import com.google.gson.JsonParser;
 import com.sasoftbd.ets.MainActivity;
 import com.sasoftbd.ets.R;
 import com.sasoftbd.ets.latlong.APIService;
+import com.sasoftbd.ets.latlong.LocationService;
 import com.sasoftbd.ets.model.AttendanceModel;
+import com.sasoftbd.ets.model.CardDate;
+import com.sasoftbd.ets.model.LoginModel;
 import com.sasoftbd.ets.network.ApiClient;
 import com.sasoftbd.ets.utils.AuthPrefsDataClass;
 import com.sasoftbd.ets.utils.Distance;
@@ -84,7 +88,7 @@ import retrofit2.Response;
 
 
 //implements AttendanceView, CardNoView, LeaveListView
-public class AttendanceActivity extends AppCompatActivity  {
+public class AttendanceActivity extends AppCompatActivity {
 
 
     private static final int FAST_UPDATE_INTERVAL = 100;
@@ -117,7 +121,7 @@ public class AttendanceActivity extends AppCompatActivity  {
     //CardNoPresenter cardNoPresenter;
     String CardNO;
     //SqliteDbHelper dbHelper;
-    //List<LoginModel> status;
+    List<LoginModel> status;
     List<AttendanceModel> attendanceModelsList = new ArrayList<>();
     TextView txt_Default, txt_Status, txt_TimeDate;
     TextView txt_DefaultOUT, txt_StatusOUT, txt_TimeDateOUT;
@@ -134,6 +138,20 @@ public class AttendanceActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attendance);
 
+
+        forceGpsON();//force on gps icon
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        }
+
+        // Start the foreground Location service ===================================================
+        Intent serviceIntent = new Intent(this, LocationService.class);
+        ContextCompat.startForegroundService(this, serviceIntent);
+        //end the foreground Location service=======================================================
+
+
+
+
         //dbHelper = new SqliteDbHelper(AttendanceActivity.this);
         imageView1 = findViewById(R.id.imageView22);
         imageView2 = findViewById(R.id.imageView23);
@@ -146,7 +164,7 @@ public class AttendanceActivity extends AppCompatActivity  {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             try {
                 PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), PackageManager.PackageInfoFlags.of(0));
-                 VersionCodeString = String.valueOf(packageInfo.getLongVersionCode()); // For version code
+                VersionCodeString = String.valueOf(packageInfo.getLongVersionCode()); // For version code
                 //VersionCodeString = packageInfo.versionName;        // For version name
 
 
@@ -155,11 +173,11 @@ public class AttendanceActivity extends AppCompatActivity  {
             } catch (PackageManager.NameNotFoundException e) {
                 e.printStackTrace();
             }
-        }else {
+        } else {
             //For Android API < 33:
             try {
                 PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-                 VersionCodeString = String.valueOf(packageInfo.versionCode);    // Deprecated in API 28+
+                VersionCodeString = String.valueOf(packageInfo.versionCode);    // Deprecated in API 28+
                 //VersionCodeString = packageInfo.versionName;
 
                 //Log.d("AppVersion", "Version Code: " + versionCode);
@@ -188,7 +206,8 @@ public class AttendanceActivity extends AppCompatActivity  {
 
         status = new ArrayList<>();
         //status = dbHelper.getloginfo();
-        status.get(0).getIntMpoType();
+        //status.get(0).setIntMpoType(0);
+        //status.get(0).getIntMpoType();
 
         dateFormat = new SimpleDateFormat("ddMMMyyyy");
         formattedDate = dateFormat.format(calendar.getTime());
@@ -298,69 +317,75 @@ public class AttendanceActivity extends AppCompatActivity  {
                 Log.d("hhhDelete", "" + requestData);
                 Call<String> call = apiservice.getStatusLeaveAttendance(requestData);
 
+                inORout = "IN";
+                if (ActivityCompat.checkSelfPermission(AttendanceActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    requestCameraPermission();
+                } else {
+                    getImageFromCamera();
+                }
+
                 call.enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
 
-
-                        if (response.body().equals("Leave Exist")) {
-                            new AlertDialog.Builder(AttendanceActivity.this)
-                                    .setTitle("সতর্কতা")
-                                    .setMessage("আজকের তারিখে ছুটির আবেদন পাওয়া গেছে, আপনি কি ছুটি বাতিল করে উপস্থিতি দিতে চান?")
-                                    .setPositiveButton("হ্যাঁ", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            //Toast.makeText(AttendanceActivity.this, "Delete Leave and Add", Toast.LENGTH_SHORT).show();
-
-
-                                            String currentDate;
-                                            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-                                            currentDate = sdf.format(new Date());
-
-
-                                            // Proceed with API call
-                                            APIService apiservice = ApiClient.getRetrofit().create(APIService.class);
-                                            JsonObject requestData = new JsonObject();
-                                            requestData.addProperty("strEMP_CARD_NO", new AuthPrefsDataClass(AttendanceActivity.this).getCardNO());
-                                            requestData.addProperty("strDate", currentDate);
-                                            requestData.addProperty("strStatus", "LeaveDelete");
-
-                                            Log.d("hhhDelete", "" + requestData);
-                                            Call<String> call = apiservice.postForDeleteLeaveInsertAttendane(requestData);
-                                            call.enqueue(new Callback<String>() {
-                                                @Override
-                                                public void onResponse(Call<String> call, Response<String> response) {
-
-                                                    if (response.body().equals("1")) {
-                                                        Toast.makeText(AttendanceActivity.this, "Leave Deleted!", Toast.LENGTH_SHORT).show();
-                                                        inORout = "IN";
-                                                        if (ActivityCompat.checkSelfPermission(AttendanceActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                                                            requestCameraPermission();
-                                                        } else {
-                                                            getImageFromCamera();
-                                                        }
-                                                    }
-                                                }
-
-                                                @Override
-                                                public void onFailure(Call<String> call, Throwable t) {
-
-                                                }
-                                            });
-
-                                        }
-                                    })
-                                    .setNegativeButton("না", null)
-                                    .show();
-
+//                        if (response.body().equals("Leave Exist")) {
+//                            new AlertDialog.Builder(AttendanceActivity.this)
+//                                    .setTitle("সতর্কতা")
+//                                    .setMessage("আজকের তারিখে ছুটির আবেদন পাওয়া গেছে, আপনি কি ছুটি বাতিল করে উপস্থিতি দিতে চান?")
+//                                    .setPositiveButton("হ্যাঁ", new DialogInterface.OnClickListener() {
+//                                        @Override
+//                                        public void onClick(DialogInterface dialog, int which) {
+//                                            //Toast.makeText(AttendanceActivity.this, "Delete Leave and Add", Toast.LENGTH_SHORT).show();
+//
+//
+//                                            String currentDate;
+//                                            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+//                                            currentDate = sdf.format(new Date());
+//
+//
+//                                            // Proceed with API call
+//                                            APIService apiservice = ApiClient.getRetrofit().create(APIService.class);
+//                                            JsonObject requestData = new JsonObject();
+//                                            requestData.addProperty("strEMP_CARD_NO", new AuthPrefsDataClass(AttendanceActivity.this).getCardNO());
+//                                            requestData.addProperty("strDate", currentDate);
+//                                            requestData.addProperty("strStatus", "LeaveDelete");
+//
+//                                            Log.d("hhhDelete", "" + requestData);
+//                                            Call<String> call = apiservice.postForDeleteLeaveInsertAttendane(requestData);
+//                                            call.enqueue(new Callback<String>() {
+//                                                @Override
+//                                                public void onResponse(Call<String> call, Response<String> response) {
+//
+//                                                    if (response.body().equals("1")) {
+//                                                        Toast.makeText(AttendanceActivity.this, "Leave Deleted!", Toast.LENGTH_SHORT).show();
+//                                                        inORout = "IN";
+//                                                        if (ActivityCompat.checkSelfPermission(AttendanceActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+//                                                            requestCameraPermission();
+//                                                        } else {
+//                                                            getImageFromCamera();
+//                                                        }
+//                                                    }
+//                                                }
+//
+//                                                @Override
+//                                                public void onFailure(Call<String> call, Throwable t) {
+//
+//                                                }
+//                                            });
+//
+//                                        }
+//                                    })
+//                                    .setNegativeButton("না", null)
+//                                    .show();
+//
+//                        } else {
+                        inORout = "IN";
+                        if (ActivityCompat.checkSelfPermission(AttendanceActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                            requestCameraPermission();
                         } else {
-                            inORout = "IN";
-                            if (ActivityCompat.checkSelfPermission(AttendanceActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                                requestCameraPermission();
-                            } else {
-                                getImageFromCamera();
-                            }
+                            getImageFromCamera();
                         }
+                        // }
 
 
                     }
@@ -392,34 +417,34 @@ public class AttendanceActivity extends AppCompatActivity  {
         });
 
 
-        LeaveParamaterModel leaveListModel = new LeaveParamaterModel();
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        String CardNo = preferences.getString("CardNo", "");
-        leaveListModel.setStrEMPCARDNO(CardNo);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // Date format
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.DAY_OF_MONTH, 1);
-        String startDate = dateFormat.format(calendar.getTime()); // Start date of the month
-        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
-        String endDate = dateFormat.format(calendar.getTime()); // End date of the month
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date today = new Date();
-        String formattedDate = sdf.format(today);
-        System.out.println("Formatted date: " + formattedDate);
-
-
-        Log.d("DateRange", "Start of the month: " + startDate);
-        Log.d("DateRange", "End of the month: " + endDate);
-        // You can also set these dates in your model if needed
-        leaveListModel.setStrFROMDATE(formattedDate);
-        leaveListModel.setStrTODATE(formattedDate);
-        Gson gson = new Gson();
-        String json = gson.toJson(leaveListModel);
-        JsonObject jsonObject = null;
-        jsonObject = new JsonParser().parse(json).getAsJsonObject();
-        leaveListPresenter = new LeaveListPresenter(AttendanceActivity.this);
-        leaveListPresenter.getLaveList(jsonObject);
-        Log.d("hello", "" + jsonObject);
+//        LeaveParamaterModel leaveListModel = new LeaveParamaterModel();
+//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+//        String CardNo = preferences.getString("CardNo", "");
+//        leaveListModel.setStrEMPCARDNO(CardNo);
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // Date format
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.set(Calendar.DAY_OF_MONTH, 1);
+//        String startDate = dateFormat.format(calendar.getTime()); // Start date of the month
+//        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+//        String endDate = dateFormat.format(calendar.getTime()); // End date of the month
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//        Date today = new Date();
+//        String formattedDate = sdf.format(today);
+//        System.out.println("Formatted date: " + formattedDate);
+//
+//
+//        Log.d("DateRange", "Start of the month: " + startDate);
+//        Log.d("DateRange", "End of the month: " + endDate);
+//        // You can also set these dates in your model if needed
+//        leaveListModel.setStrFROMDATE(formattedDate);
+//        leaveListModel.setStrTODATE(formattedDate);
+//        Gson gson = new Gson();
+//        String json = gson.toJson(leaveListModel);
+//        JsonObject jsonObject = null;
+//        jsonObject = new JsonParser().parse(json).getAsJsonObject();
+//        leaveListPresenter = new LeaveListPresenter(AttendanceActivity.this);
+//        leaveListPresenter.getLaveList(jsonObject);
+//        Log.d("hello", "" + jsonObject);
 
 
     }
@@ -816,14 +841,42 @@ public class AttendanceActivity extends AppCompatActivity  {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(this, MainActivity.class));
-        this.overridePendingTransition(R.anim.abc_popup_enter, R.anim.abc_popup_exit);
+        //startActivity(new Intent(this, MainActivity.class));
+        //this.overridePendingTransition(R.anim.abc_popup_enter, R.anim.abc_popup_exit);
     }
 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 101) {
+            if (resultCode == Activity.RESULT_OK) {
+                // GPS enabled by user
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                // GPS not enabled
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case DialogInterface.BUTTON_POSITIVE:
+                                forceGpsON();
+                                break;
+
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                ActivityCompat.finishAffinity(AttendanceActivity.this);
+                                break;
+                        }
+                    }
+                };
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(AttendanceActivity.this);
+                builder.setMessage("Location is Mandatory")
+                        .setPositiveButton("Try Again", dialogClickListener)
+                        .setNegativeButton("Exit", dialogClickListener)
+                        .show();
+            }
+        }
 
         switch (requestCode) {
             case 101:
@@ -1027,7 +1080,7 @@ public class AttendanceActivity extends AppCompatActivity  {
 
     public void whenClickBack(View view) {
         startActivity(new Intent(this, MainActivity.class));
-        this.overridePendingTransition(R.anim.abc_popup_enter, R.anim.abc_popup_exit);
+        //this.overridePendingTransition(R.anim.abc_popup_enter, R.anim.abc_popup_exit);
     }
 
 
@@ -1287,6 +1340,12 @@ public class AttendanceActivity extends AppCompatActivity  {
 
     }
 
+    public void ClickAttendanceSummery(View view) {
+    }
+
+    public void ClickApprove(View view) {
+    }
+
 
     //for phone image issue ========================================================================
 //    private void checkPermissionAndTakePhoto() {
@@ -1367,6 +1426,148 @@ public class AttendanceActivity extends AppCompatActivity  {
 //        });
 //
 //        btnCancel.setOnClickListener(v -> alertDialog.dismiss());
+//    }
+
+
+
+
+//    public void forceGpsON() {
+//
+//        LocationRequest locationRequest1 = LocationRequest.create();
+//        locationRequest1.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+//        locationRequest1.setInterval(10000);
+//        locationRequest1.setFastestInterval(10000 / 2);
+//        LocationSettingsRequest.Builder locationSettingBuilder = new LocationSettingsRequest.Builder();
+//        locationSettingBuilder.addLocationRequest(locationRequest1);
+//        locationSettingBuilder.setAlwaysShow(true);
+//        SettingsClient settingsClient = LocationServices.getSettingsClient(this);
+//        Task<LocationSettingsResponse> task = settingsClient.checkLocationSettings(locationSettingBuilder.build());
+//        task.addOnSuccessListener(this, new OnSuccessListener<LocationSettingsResponse>() {
+//            @Override
+//            public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
+//
+//                //updateGPS();
+//
+//            }
+//        });
+//
+//
+//        task.addOnCompleteListener(new OnCompleteListener<LocationSettingsResponse>() {
+//            @Override
+//            public void onComplete(@NonNull Task<LocationSettingsResponse> task) {
+//                try {
+//                    LocationSettingsResponse response = task.getResult(ApiException.class);
+//                    // All location settings are satisfied. The client can initialize location
+//                    // requests here.
+//                } catch (ApiException exception) {
+//                    switch (exception.getStatusCode()) {
+//                        case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+//                            // Location settings are not satisfied. But could be fixed by showing the
+//                            // user a dialog.
+//                            try {
+//                                // Cast to a resolvable exception.
+//                                ResolvableApiException resolvable = (ResolvableApiException) exception;
+//                                // Show the dialog by calling startResolutionForResult(),
+//                                // and check the result in onActivityResult().
+//                                resolvable.startResolutionForResult(
+//                                        AttendanceActivity.this,
+//                                        101);
+//                            } catch (IntentSender.SendIntentException e) {
+//                                // Ignore the error.
+//                            } catch (ClassCastException e) {
+//                                // Ignore, should be an impossible error.
+//                            }
+//                            break;
+//                        case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+//                            // Location settings are not satisfied. However, we have no way to fix the
+//                            // settings so we won't show the dialog.
+//                            break;
+//                    }
+//                }
+//            }
+//        });
+//
+//
+//    }
+
+
+
+
+
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        //it work for location get and
+//        final LocationSettingsStates states = LocationSettingsStates.fromIntent(data);
+//        switch (requestCode) {
+//            case 101:
+//                switch (resultCode) {
+//                    case Activity.RESULT_OK:
+//                        break;
+//                    case Activity.RESULT_CANCELED:
+//                        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                switch (which) {
+//                                    case DialogInterface.BUTTON_POSITIVE:
+//                                        forceGpsON();
+//                                        break;
+//
+//                                    case DialogInterface.BUTTON_NEGATIVE:
+//                                        ActivityCompat.finishAffinity(AttendanceActivity.this);
+//                                        break;
+//                                }
+//                            }
+//                        };
+//
+//                        AlertDialog.Builder builder = new AlertDialog.Builder(AttendanceActivity.this);
+//                        builder.setMessage("Location is Mandatory").setPositiveButton("Try Again", dialogClickListener)
+//                                .setNegativeButton("Exit", dialogClickListener).show();
+//                        break;
+//                    default:
+//                        break;
+//                }
+//                break;
+//        }
+//
+//
+//    }
+
+
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        // Existing code...
+//
+//        if (requestCode == 101) {
+//            if (resultCode == Activity.RESULT_OK) {
+//                // GPS enabled by user
+//            } else if (resultCode == Activity.RESULT_CANCELED) {
+//                // GPS not enabled
+//                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        switch (which) {
+//                            case DialogInterface.BUTTON_POSITIVE:
+//                                forceGpsON();
+//                                break;
+//
+//                            case DialogInterface.BUTTON_NEGATIVE:
+//                                ActivityCompat.finishAffinity(AttendanceActivity.this);
+//                                break;
+//                        }
+//                    }
+//                };
+//
+//                AlertDialog.Builder builder = new AlertDialog.Builder(AttendanceActivity.this);
+//                builder.setMessage("Location is Mandatory")
+//                        .setPositiveButton("Try Again", dialogClickListener)
+//                        .setNegativeButton("Exit", dialogClickListener)
+//                        .show();
+//            }
+//        }
 //    }
 
 

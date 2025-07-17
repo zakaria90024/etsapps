@@ -13,7 +13,9 @@ public class ApiClient {
     //public static String BASE_URL_SERVER = "http://192.168.1.63:8080/api/";
 
     public static String BASE_URL_SERVER = "http://192.168.1.216:8080/api/";
-    //public static String BASE_URL_SERVER = "http://182.160.126.21:8082/api/";//Real Server
+    //public static String BASE_URL_SERVER = "http://35.192.59.236:9191/api/";
+
+
 
     private static Retrofit retrofit = null;
 

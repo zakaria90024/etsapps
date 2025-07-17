@@ -241,7 +241,7 @@ public class LocationService extends Service {
 
                         Log.d("Called", "first called again");
 
-                        LocationPostModel locationPostModel = new LocationPostModel(getCurrentTime(), getCurrentTime(), "Travelling", "", fullAddress, String.valueOf(batteryInt) + "%", "", String.valueOf(latitude), String.valueOf(longitude), "dfd", authPrefsDataClass.getCardNO(), authPrefsDataClass.getRole());
+                        LocationPostModel locationPostModel = new LocationPostModel(getCurrentTime(), getCurrentTime(), "Travelling", "", fullAddress, String.valueOf(batteryInt) + "%", "", String.valueOf(latitude), String.valueOf(longitude), "Test Name", "M-10000", "USER");
                         Gson gson = new Gson();
                         String json = gson.toJson(locationPostModel);
                         JsonObject jsonObject = null;
@@ -305,7 +305,7 @@ public class LocationService extends Service {
                                 double distance = calculateDistance(Double.valueOf(latold), Double.valueOf(longold), latitude, longitude);
                                 double distanceMeters = convertKmToMeters(distance);
                                 Log.d("Distance", "Distance between locations: " + (int) Math.floor(distance) + " Km " + (int) Math.ceil(distanceMeters) + " m");
-                                LocationPostModel locationPostModel = new LocationPostModel(EndTimeOld, getCurrentTime(), calculateTimeDifference(EndTimeOld, getCurrentTime()), (int) Math.floor(distance) + " Km " + (int) Math.ceil(distanceMeters) + " m", fullAddress, String.valueOf(batteryInt) + "%", convertMillisecondsToMinutesAndSeconds(INTERVAL_TIME), String.valueOf(latitude), String.valueOf(longitude), "dfd", authPrefsDataClass.getCardNO(), authPrefsDataClass.getRole());
+                                LocationPostModel locationPostModel = new LocationPostModel(EndTimeOld, getCurrentTime(), calculateTimeDifference(EndTimeOld, getCurrentTime()), (int) Math.floor(distance) + " Km " + (int) Math.ceil(distanceMeters) + " m", fullAddress, String.valueOf(batteryInt) + "%", convertMillisecondsToMinutesAndSeconds(INTERVAL_TIME), String.valueOf(latitude), String.valueOf(longitude), "Test Name", "M-10000", "USER");
 
                                 Gson gson = new Gson();
                                 String json = gson.toJson(locationPostModel);

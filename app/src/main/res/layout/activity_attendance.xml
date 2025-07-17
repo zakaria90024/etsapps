@@ -11,7 +11,7 @@
         android:id="@+id/textView17"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="#000000"
+        android:background="@color/colorPrimaryDark"
         android:fontFamily="@string/material_motion_easing_linear"
         android:padding="12dp"
         android:textColor="@color/white"
@@ -41,6 +41,7 @@
             android:background="@drawable/ic_back"
             android:backgroundTint="@color/white"
             android:onClick="whenClickBack"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -143,7 +144,7 @@
                         android:layout_margin="6dp"
                         android:layout_marginEnd="4dp"
                         android:layout_weight="1"
-                        android:background="#343333"
+                        android:backgroundTint="@color/colorPrimaryDark"
                         android:text="In"
                         android:textAlignment="center"
                         android:textColor="@color/white" />
@@ -155,8 +156,8 @@
                         android:layout_margin="6dp"
                         android:layout_marginStart="4dp"
                         android:layout_weight="1"
-                        android:background="#E6E6E6"
                         android:text="Out"
+                        android:backgroundTint="@color/colorPrimaryDark"
                         android:textAlignment="center"
                         android:textColor="@color/white" />
 
@@ -393,8 +394,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            android:background="#000000"
-            android:backgroundTint="#000000"
+            android:backgroundTint="@color/colorPrimaryDark"
             android:elevation="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
