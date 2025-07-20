@@ -11,7 +11,8 @@ import retrofit2.http.POST;
 public interface APIService {
 
 
-    @POST("ShfitConfig/mPostLocations")
+    //ShfitConfig/mPostLocations
+    @POST("location/insert")
     Call<String> postLocation(@Body JsonObject jsonObject);
 
     @POST("ShfitConfig/mPostForGetStatusLeaveAttendance")
@@ -21,7 +22,8 @@ public interface APIService {
     @POST("ShfitConfig/mGetUserReturnVal")
     Call<List<AttendanceModel>> getButtonStatus(@Body JsonObject data);
 
-    @POST("ShfitConfig/SaveAttendance")
+    //ShfitConfig/SaveAttendance
+    @POST("attendance/insert")
     Call<String> getAttendanceDataSubmit(@Body JsonObject data);
 
 

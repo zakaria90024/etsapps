@@ -119,7 +119,7 @@ public class AttendanceActivity extends AppCompatActivity {
     final List<String> leaveList = new ArrayList<>();
     //AttendancePresenter attendancePresenter;
     //CardNoPresenter cardNoPresenter;
-    String CardNO;
+    String CardNO = "M-10000";
     //SqliteDbHelper dbHelper;
     List<LoginModel> status;
     List<AttendanceModel> attendanceModelsList = new ArrayList<>();
@@ -148,8 +148,6 @@ public class AttendanceActivity extends AppCompatActivity {
         Intent serviceIntent = new Intent(this, LocationService.class);
         ContextCompat.startForegroundService(this, serviceIntent);
         //end the foreground Location service=======================================================
-
-
 
 
         //dbHelper = new SqliteDbHelper(AttendanceActivity.this);
@@ -976,7 +974,7 @@ public class AttendanceActivity extends AppCompatActivity {
                     }
 
 
-                    sendDateToServer("", TypeUser, CardNO, todayDateFormated, lat, lang, address,
+                    sendDateToServer("Test User Name", TypeUser, CardNO, todayDateFormated, lat, lang, address,
                             convertdis, comment.getText().toString(), "Pending", inORout, img);
 
                     alertDialog.dismiss();
@@ -987,53 +985,55 @@ public class AttendanceActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
 
-                    try {
+                    //try {
 
 
-                        String lat = sharedPref.getString("lat", "");
-                        String lang = sharedPref.getString("lang", "");
-                        String address = sharedPref.getString("address", "");
+                    String lat = sharedPref.getString("lat", "");
+                    String lang = sharedPref.getString("lang", "");
+                    String address = sharedPref.getString("address", "");
 
-                        int userType = status.get(0).getIntMpoType();
-                        String TypeUser = "";
+//                    int userType = ;
+//                        String TypeUser = "";
+//
+//                        if (userType == 0) {
+//                            if (new AuthPrefsDataClass(getApplicationContext()).getRole().equals("ZH")) {
+//                                TypeUser = "ZH";
+//                            } else {
+//                                TypeUser = "MPO";
+//                            }
+//                        } else if (userType == 1) {
+//                            TypeUser = "AH";
+//                        } else if (userType == 2) {
+//                            TypeUser = "DH";
+//                        } else if (userType == 4) {
+//                            TypeUser = "DIST";
+//                        } else if (userType == 5) {
+//                            TypeUser = "SR";
+//                        } else if (userType == 6) {
+//                            TypeUser = "TEAM";
+//                        }
 
-                        if (userType == 0) {
-                            if (new AuthPrefsDataClass(getApplicationContext()).getRole().equals("ZH")) {
-                                TypeUser = "ZH";
-                            } else {
-                                TypeUser = "MPO";
-                            }
-                        } else if (userType == 1) {
-                            TypeUser = "AH";
-                        } else if (userType == 2) {
-                            TypeUser = "DH";
-                        } else if (userType == 4) {
-                            TypeUser = "DIST";
-                        } else if (userType == 5) {
-                            TypeUser = "SR";
-                        } else if (userType == 6) {
-                            TypeUser = "TEAM";
+                    String TypeUser = "USER";
+
+                    String convertdis = "0";
+
+                    if (inORout.equals("OUT")) {
+                        try {
+                            dis = Distance.distance(Double.valueOf(attendanceModelsList.get(0).getStrLATITUDE()), Double.valueOf(lat), Double.valueOf(attendanceModelsList.get(0).getStrLONGITUDE()), Double.valueOf(lang));
+                            convertdis = String.valueOf(dis);
+                        } catch (Exception e) {
+                            convertdis = "0";
                         }
 
-                        String convertdis = "0";
-
-                        if (inORout.equals("OUT")) {
-                            try {
-                                dis = Distance.distance(Double.valueOf(attendanceModelsList.get(0).getStrLATITUDE()), Double.valueOf(lat), Double.valueOf(attendanceModelsList.get(0).getStrLONGITUDE()), Double.valueOf(lang));
-                                convertdis = String.valueOf(dis);
-                            } catch (Exception e) {
-                                convertdis = "0";
-                            }
-
-                        }
-
-                        sendDateToServer("", TypeUser, CardNO, todayDateFormated, lat, lang, address, convertdis, comment.getText().toString(), "Pending", inORout, img);
-
-                        alertDialog.dismiss();
-                    } catch (Exception e) {
-                        Toast.makeText(AttendanceActivity.this, "Check Location & Internet", Toast.LENGTH_SHORT).show();
-                        alertDialog.dismiss();
                     }
+
+                    sendDateToServer("Test User Name", TypeUser, CardNO, todayDateFormated, lat, lang, address, convertdis, comment.getText().toString(), "Pending", inORout, img);
+
+                    alertDialog.dismiss();
+//                    } catch (Exception e) {
+//                        Toast.makeText(AttendanceActivity.this, "Check Location & Internet", Toast.LENGTH_SHORT).show();
+//                        alertDialog.dismiss();
+//                    }
 
                 }
             });
@@ -1133,12 +1133,12 @@ public class AttendanceActivity extends AppCompatActivity {
             return;
         }
 
-        if (strEMP_CARD_NO.isEmpty()) {
-            Toast.makeText(this, "Your CardNo Not Found", Toast.LENGTH_SHORT).show();
-            return;
-        }
+//        if (strEMP_CARD_NO.isEmpty()) {
+//            Toast.makeText(this, "Your CardNo Not Found", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
         attendanceModel.setStrROLE(strROLE);
-        attendanceModel.setStrEMPCARDNO(strEMP_CARD_NO);
+        attendanceModel.setStrEMPCARDNO("M-10000");
         attendanceModel.setStrATTENDATEIN(strATTEN_DATEIN);
         attendanceModel.setStrLATITUDE(strLATITUDE);
         attendanceModel.setStrLONGITUDE(strLONGITUDE);
@@ -1149,7 +1149,7 @@ public class AttendanceActivity extends AppCompatActivity {
         attendanceModel.setStrATTENCOMMENTS(strATTEN_COMMENTS);
         attendanceModel.setStrACTION(strACTION);
         attendanceModel.setStrATTENSTATUS(strATTEN_STATUS);
-        attendanceModel.setStrEMPIMAGE(imageString);//imageString
+        attendanceModel.setStrEMPIMAGE("dsf");//imageString
         attendanceModel.setAppsVersion(VersionCodeString);
 
         List<AttendanceModel> leaveList = new ArrayList<>();
@@ -1429,8 +1429,6 @@ public class AttendanceActivity extends AppCompatActivity {
 //    }
 
 
-
-
 //    public void forceGpsON() {
 //
 //        LocationRequest locationRequest1 = LocationRequest.create();
@@ -1489,9 +1487,6 @@ public class AttendanceActivity extends AppCompatActivity {
 //
 //
 //    }
-
-
-
 
 
 //    @Override
@@ -1569,7 +1564,6 @@ public class AttendanceActivity extends AppCompatActivity {
 //            }
 //        }
 //    }
-
 
 
 }

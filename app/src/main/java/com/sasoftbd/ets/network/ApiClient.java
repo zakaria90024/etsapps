@@ -12,7 +12,16 @@ public class ApiClient {
 
     //public static String BASE_URL_SERVER = "http://192.168.1.63:8080/api/";
 
-    public static String BASE_URL_SERVER = "http://192.168.1.216:8080/api/";
+    //public static String BASE_URL_SERVER = "http://192.168.1.216:8080/api/";
+    //public static final String BASE_URL_SERVER = "http://192.168.115.1:8080/api/";
+
+
+    //ngrok http 8080
+    //ngrok config add-authtoken 308QBurqWEW9kuBcsr8XMoxbEXQ_7ierBXaRLw4o2bPQgMANG
+    public static final String BASE_URL_SERVER = "https://d7cea1cfafab.ngrok-free.app/api/";
+
+
+
     //public static String BASE_URL_SERVER = "http://35.192.59.236:9191/api/";
 
 

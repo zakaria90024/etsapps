@@ -280,7 +280,7 @@ public class LocationService extends Service {
 
                             @Override
                             public void onFailure(Call<String> call, Throwable t) {
-                                Log.d("Called", "First call Fail");
+                                Log.d("Called", "First call Fail"+t.getMessage());
                             }
                         });
 
@@ -342,7 +342,7 @@ public class LocationService extends Service {
 
                                     @Override
                                     public void onFailure(Call<String> call, Throwable t) {
-                                        Log.d("Called", "second call Fail");
+                                        Log.d("Called", "second call Fail"+t.getMessage());
                                         sharedPreferences.edit().clear();
                                     }
                                 });
