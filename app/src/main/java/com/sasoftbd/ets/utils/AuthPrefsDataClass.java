@@ -1,5 +1,7 @@
 package com.sasoftbd.ets.utils;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -10,10 +12,11 @@ import java.util.List;
 
 public class AuthPrefsDataClass {
 
-    String pic, CNo, details, branchCode, userTypeName, role;
-    int userType;
-    private SharedPreferences sharedPreferences;
+    String pic, CNo, details, branchCode, userTypeName, role, UserName, userID;
+    String userType;
+    public  SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
+
 
 
     // Constructor
@@ -23,13 +26,16 @@ public class AuthPrefsDataClass {
         //status = dbHelper.getloginfo();
         //model = status.get(0);
 
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
-        pic = settings.getString("Picture", "");
-        userType = settings.getInt("userType", 0);
-        role = settings.getString("role", "");
-        branchCode = settings.getString("branch_code", "");
-        CNo = settings.getString("CardNo", "");
-        details = settings.getString("Details", "");
+        sharedPreferences = context.getSharedPreferences("auth_prefs_login", MODE_PRIVATE);
+        //SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
+        pic = sharedPreferences.getString("Picture", "");
+        userID = sharedPreferences.getString("userID", "");
+        UserName = sharedPreferences.getString("UserName", "");
+        userType = sharedPreferences.getString("userType", "");
+        role = sharedPreferences.getString("role", "");
+        branchCode = sharedPreferences.getString("branch_code", "");
+        CNo = sharedPreferences.getString("CardNo", "");
+        details = sharedPreferences.getString("Details", "");
         //final  String branchIdDist = branchCode;
 
         //setBranchIdDist(branchCode);
@@ -42,17 +48,17 @@ public class AuthPrefsDataClass {
     }
 
     public String getRole(){
-        if(userType == 0){
+        if(userType == "0"){
             userTypeName = role;
-        }else if(userType == 1){
+        }else if(userType == "1"){
             userTypeName= role;
-        }else if(userType == 2){
+        }else if(userType == "2"){
             userTypeName= role;
-        }else if(userType == 4){
+        }else if(userType == "4"){
             userTypeName= role;
-        }else if(userType == 5){
+        }else if(userType == "5"){
             userTypeName= role;
-        }else if(userType == 6){
+        }else if(userType == "6"){
             userTypeName= role;
         }
         return userTypeName;
@@ -63,6 +69,13 @@ public class AuthPrefsDataClass {
         return branchCode;
     }
 
+
+    public String getUserName(){
+        return UserName;
+    }
+    public String getUserID(){
+        return userID;
+    }
 
 
     public  String getBranchName(){

@@ -132,11 +132,13 @@ public class AttendanceActivity extends AppCompatActivity {
     private Uri photoURI;
     String selectedDate;
     String VersionCodeString;
+    AuthPrefsDataClass authPrefsDataClass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attendance);
+        authPrefsDataClass = new AuthPrefsDataClass(this);
 
 
         forceGpsON();//force on gps icon
@@ -154,7 +156,6 @@ public class AttendanceActivity extends AppCompatActivity {
         imageView1 = findViewById(R.id.imageView22);
         imageView2 = findViewById(R.id.imageView23);
 
-        AuthPrefsDataClass authPrefsDataClass = new AuthPrefsDataClass(this);
 
 
         //for get version ==========================================================================
@@ -187,16 +188,17 @@ public class AttendanceActivity extends AppCompatActivity {
         //end get version ==========================================================================
 
 
-        if (authPrefsDataClass.getRole().equals("AH") || authPrefsDataClass.getRole().equals("DH") || authPrefsDataClass.getRole().equals("ZH") || authPrefsDataClass.getRole().equals("Admin") || authPrefsDataClass.getRole().equals("TEAM")) {
-            imageView1.setVisibility(View.VISIBLE);
-            imageView2.setVisibility(View.VISIBLE);
 
-        } else {
+//        if (authPrefsDataClass.getRole().equals("AH") || authPrefsDataClass.getRole().equals("DH") || authPrefsDataClass.getRole().equals("ZH") || authPrefsDataClass.getRole().equals("Admin") || authPrefsDataClass.getRole().equals("TEAM")) {
+//            imageView1.setVisibility(View.VISIBLE);
+//            imageView2.setVisibility(View.VISIBLE);
+//
+//        } else {
 
             imageView1.setVisibility(View.GONE);
             imageView2.setVisibility(View.GONE);
 
-        }
+//        }
 
 
         date = findViewById(R.id.textView46);
@@ -286,13 +288,13 @@ public class AttendanceActivity extends AppCompatActivity {
         });
 
 
-        if (new AuthPrefsDataClass(this).getRole().equals("Admin")) {
-            btnIN.setEnabled(false);
-            btnOUT.setEnabled(false);
-        } else {
+//        if (new AuthPrefsDataClass(this).getRole().equals("Admin")) {
+//            btnIN.setEnabled(false);
+//            btnOUT.setEnabled(false);
+//        } else {
             btnIN.setEnabled(true);
             btnOUT.setEnabled(true);
-        }
+//        }
 
 
         btnIN.setOnClickListener(view -> {
@@ -450,8 +452,8 @@ public class AttendanceActivity extends AppCompatActivity {
     private void btnRefressh() {
 
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        CardNO = preferences.getString("CardNo", "");
+        AuthPrefsDataClass s = new AuthPrefsDataClass(this);
+        CardNO = s.getCardNO();
         TextView d = (TextView) findViewById(R.id.textView50);
         d.setText("Card No: " + CardNO);
 
@@ -974,7 +976,7 @@ public class AttendanceActivity extends AppCompatActivity {
                     }
 
 
-                    sendDateToServer("Test User Name", TypeUser, CardNO, todayDateFormated, lat, lang, address,
+                    sendDateToServer(authPrefsDataClass.getUserName(), TypeUser, CardNO, todayDateFormated, lat, lang, address,
                             convertdis, comment.getText().toString(), "Pending", inORout, img);
 
                     alertDialog.dismiss();
@@ -1027,7 +1029,7 @@ public class AttendanceActivity extends AppCompatActivity {
 
                     }
 
-                    sendDateToServer("Test User Name", TypeUser, CardNO, todayDateFormated, lat, lang, address, convertdis, comment.getText().toString(), "Pending", inORout, img);
+                    sendDateToServer(authPrefsDataClass.getUserName(), TypeUser, CardNO, todayDateFormated, lat, lang, address, convertdis, comment.getText().toString(), "Pending", inORout, img);
 
                     alertDialog.dismiss();
 //                    } catch (Exception e) {
@@ -1096,6 +1098,7 @@ public class AttendanceActivity extends AppCompatActivity {
             } else {
                 attendanceModel.setStrUSERNAME(strUSER_NAME);
             }
+
         } catch (Exception ignore) {
 
         }
@@ -1137,8 +1140,9 @@ public class AttendanceActivity extends AppCompatActivity {
 //            Toast.makeText(this, "Your CardNo Not Found", Toast.LENGTH_SHORT).show();
 //            return;
 //        }
+        attendanceModel.setStrUSERNAME(strUSER_NAME);
         attendanceModel.setStrROLE(strROLE);
-        attendanceModel.setStrEMPCARDNO("M-10000");
+        attendanceModel.setStrEMPCARDNO(strEMP_CARD_NO);
         attendanceModel.setStrATTENDATEIN(strATTEN_DATEIN);
         attendanceModel.setStrLATITUDE(strLATITUDE);
         attendanceModel.setStrLONGITUDE(strLONGITUDE);
@@ -1171,7 +1175,7 @@ public class AttendanceActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
 
-                if (response.body().toString().equals("Insert successfully")) {
+                if (response.isSuccessful()) {
 
                     //Toast.makeText(AttendanceActivity.this, "===" + response.code(), Toast.LENGTH_SHORT).show();
                     sharedPref = getSharedPreferences("location", MODE_PRIVATE);
@@ -1179,7 +1183,7 @@ public class AttendanceActivity extends AppCompatActivity {
                     editor.clear();
                     btnIN.setClickable(false);
                     btnRefressh();
-                    Toast.makeText(AttendanceActivity.this, "Done", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AttendanceActivity.this, "Done "+response.body().toString(), Toast.LENGTH_SHORT).show();
 
                 } else {
 

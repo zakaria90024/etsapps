@@ -1,6 +1,10 @@
 package com.sasoftbd.ets.network;
 
 
+import android.content.Context;
+
+import com.sasoftbd.ets.Auth.Login.TokenInterceptor;
+
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -18,7 +22,8 @@ public class ApiClient {
 
     //ngrok http 8080
     //ngrok config add-authtoken 308QBurqWEW9kuBcsr8XMoxbEXQ_7ierBXaRLw4o2bPQgMANG
-    public static final String BASE_URL_SERVER = "https://d7cea1cfafab.ngrok-free.app/api/";
+    //public static final String BASE_URL_SERVER = "https://d7cea1cfafab.ngrok-free.app/api/";
+    public static final String BASE_URL_SERVER = "http://35.192.59.236:9191/api/";
 
 
 
@@ -58,6 +63,20 @@ public class ApiClient {
                 .connectTimeout(2, TimeUnit.MINUTES)
                 .writeTimeout(2, TimeUnit.MINUTES)
                 .readTimeout(2, TimeUnit.MINUTES)
+                .build();
+    }
+
+
+
+    public static Retrofit getRetrofit(Context context) {
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(new TokenInterceptor(context))
+                .build();
+
+        return new Retrofit.Builder()
+                .baseUrl(BASE_URL_SERVER)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
                 .build();
     }
 
