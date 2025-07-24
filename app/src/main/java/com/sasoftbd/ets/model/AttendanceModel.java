@@ -57,14 +57,15 @@ public class AttendanceModel {
     @SerializedName("strATTEN_STATUS")
     @Expose
     private String strATTENSTATUS;
+
     @SerializedName("strEMP_IMAGE")
     @Expose
     private String strEMPIMAGE;
 
 
-    @SerializedName("strINSERT_DATE")
+    @SerializedName("insertDate")
     @Expose
-    private String strINSERT_DATE;
+    private String insertDate;
 
     @SerializedName("strTERRITORRY_NAME")
     @Expose
@@ -105,7 +106,7 @@ public class AttendanceModel {
     }
 
     public String getstrINSERT_DATE() {
-        return strINSERT_DATE;
+        return insertDate;
     }
     public String getStrUSERNAME() {
         return strUSERNAME;

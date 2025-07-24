@@ -129,13 +129,13 @@ public class AttendanceDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Toast.makeText(AttendanceDetailsActivity.this, "kk" + in.getStringExtra("strLATITUDE"), Toast.LENGTH_SHORT).show();
+                ///Toast.makeText(AttendanceDetailsActivity.this, "kk" + in.getStringExtra("strLATITUDE"), Toast.LENGTH_SHORT).show();
 
 
-//                Intent intent = new Intent(AttendanceDetailsActivity.this, GoogleMapActivity.class);
-//                intent.putExtra("lat", in.getStringExtra("strLATITUDE"));
-//                intent.putExtra("long", in.getStringExtra("strLONGITUDE"));
-//                startActivity(intent);
+                Intent intent = new Intent(AttendanceDetailsActivity.this, GoogleMapActivity.class);
+                intent.putExtra("lat", in.getStringExtra("strLATITUDE"));
+                intent.putExtra("long", in.getStringExtra("strLONGITUDE"));
+                startActivity(intent);
             }
         });
 

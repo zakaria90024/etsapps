@@ -119,7 +119,7 @@ public class AttendanceActivity extends AppCompatActivity {
     final List<String> leaveList = new ArrayList<>();
     //AttendancePresenter attendancePresenter;
     //CardNoPresenter cardNoPresenter;
-    String CardNO = "M-10000";
+    String CardNO;
     //SqliteDbHelper dbHelper;
     List<LoginModel> status;
     List<AttendanceModel> attendanceModelsList = new ArrayList<>();
@@ -292,8 +292,8 @@ public class AttendanceActivity extends AppCompatActivity {
 //            btnIN.setEnabled(false);
 //            btnOUT.setEnabled(false);
 //        } else {
-            btnIN.setEnabled(true);
-            btnOUT.setEnabled(true);
+//            btnIN.setEnabled(true);
+//            btnOUT.setEnabled(true);
 //        }
 
 
@@ -466,6 +466,8 @@ public class AttendanceActivity extends AppCompatActivity {
         JsonObject jsonObject = null;
         jsonObject = new JsonParser().parse(json).getAsJsonObject();
 
+        Log.d("test", ""+jsonObject);
+
 
         APIService apiservice = ApiClient.getRetrofit().create(APIService.class);
         //APIService apiservice = retrofitSms.create(APIService.class);
@@ -478,7 +480,7 @@ public class AttendanceActivity extends AppCompatActivity {
 
                     attendanceModelsList = response.body();
                     //kisu nai
-                    if (attendanceModelsList.size() == 1 && attendanceModelsList.get(0).getStrUSERNAME().equals("")) {
+                    if (attendanceModelsList.size() == 0 ) {
 
                         btnIN.setClickable(true);
                         btnIN.setBackgroundResource(R.color.colorPrimaryDark);
@@ -491,7 +493,7 @@ public class AttendanceActivity extends AppCompatActivity {
                     }
 
                     //in ase
-                    if (attendanceModelsList.size() == 1 && !attendanceModelsList.get(0).getStrUSERNAME().equals("")) {
+                    if (attendanceModelsList.size() == 1 ) {
 
                         constraintLayoudftdf7IN.setVisibility(View.VISIBLE);
                         btnIN.setClickable(false);
@@ -520,14 +522,14 @@ public class AttendanceActivity extends AppCompatActivity {
 
 
                     txt_Default.setText(attendanceModelsList.get(0).getStrATTENSHIFT());
-                    txt_TimeDate.setText(attendanceModelsList.get(0).getstrINSERT_DATE());
+                    txt_TimeDate.setText(attendanceModelsList.get(0).getStrATTENTIMEIN()+" "+attendanceModelsList.get(0).getstrINSERT_DATE());
                     txt_Status.setText(attendanceModelsList.get(0).getStrATTENSTATUS());
                     btnText_Status.setText(attendanceModelsList.get(0).getStrACTION());
 
 
                     try {
                         txt_DefaultOUT.setText(attendanceModelsList.get(1).getStrATTENSHIFT());
-                        txt_TimeDateOUT.setText(attendanceModelsList.get(1).getstrINSERT_DATE());
+                        txt_TimeDateOUT.setText(attendanceModelsList.get(0).getStrATTENTIMEIN()+" "+attendanceModelsList.get(1).getstrINSERT_DATE());
                         txt_StatusOUT.setText(attendanceModelsList.get(1).getStrATTENSTATUS());
                         btnText_StatusOUT.setText(attendanceModelsList.get(1).getStrACTION());
 
@@ -608,7 +610,6 @@ public class AttendanceActivity extends AppCompatActivity {
         constraintLayoudftdf7IN = findViewById(R.id.constraintLayoudftdf7IN);
 
         txt_Default = findViewById(R.id.textView_ShiftName);
-        txt_TimeDate = findViewById(R.id.textView_Date);
         txt_Status = findViewById(R.id.textView_IN);
         btnText_Status = findViewById(R.id.btnText_Status);
 
@@ -1170,10 +1171,10 @@ public class AttendanceActivity extends AppCompatActivity {
 
         APIService apiservice = ApiClient.getRetrofit().create(APIService.class);
         //APIService apiservice = retrofitSms.create(APIService.class);
-        Call<String> call = apiservice.getAttendanceDataSubmit(jsonObject);
-        call.enqueue(new Callback<String>() {
+        Call<JsonObject> call = apiservice.getAttendanceDataSubmit(jsonObject);
+        call.enqueue(new Callback<JsonObject>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
                 if (response.isSuccessful()) {
 
@@ -1200,7 +1201,7 @@ public class AttendanceActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(Call<JsonObject> call, Throwable t) {
                 Log.d("ERROR", "" + t.getMessage());
                 //Toast.makeText(AttendanceActivity.this, "fail "+t.getMessage(), Toast.LENGTH_SHORT).show();
 

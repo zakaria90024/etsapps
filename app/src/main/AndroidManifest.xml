@@ -50,26 +50,46 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".stadium.TicketActivity"
+            android:exported="false">
+
+        </activity>
+        <activity
             android:name=".chart.ChartActivity"
-            android:exported="true" >
+            android:exported="true">
+
+        </activity>
+        <activity
+            android:name=".Auth.Login.LoginJwtActivity"
+            android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".Auth.Login.LoginJwtActivity"
-            android:exported="true">
 
         </activity>
+
         <activity
             android:name=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".activites.attendance.AttendanceActivity"
-            android:exported="true"></activity>
+            android:exported="false">
+
+
+        </activity>
+
+        <activity
+            android:name=".activites.attendance.TrackingGoogleMapActivity"
+            android:exported="false">
+
+
+        </activity>
+
+        <activity android:name=".activites.attendance.GoogleMapActivity"/>
+
         <activity
             android:name=".activites.attendance.AttendanceDetailsActivity"
             android:exported="false" />
@@ -79,6 +99,11 @@
             android:enabled="true"
             android:foregroundServiceType="location"
             android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBe7gVeZi9AQDa3VequhQwhJUzyutvHs2Q" />
+
     </application>
 
 </manifest>

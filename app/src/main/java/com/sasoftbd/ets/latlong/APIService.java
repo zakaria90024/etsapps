@@ -18,16 +18,28 @@ public interface APIService {
     @POST("location/insert")
     Call<String> postLocation(@Body JsonObject jsonObject);
 
+
+
+    @POST("location/read?strEMP_CARD_NO=M-10001&insertDate=24-07-2025")
+    Call<String> postLocationRead(@Body JsonObject jsonObject);
+
+
+
     @POST("ShfitConfig/mPostForGetStatusLeaveAttendance")
     Call<String> getStatusLeaveAttendance(@Body JsonObject data);
 
 
-    @POST("ShfitConfig/mGetUserReturnVal")
-    Call<List<AttendanceModel>> getButtonStatus(@Body JsonObject data);
+//    @POST("ShfitConfig/mGetUserReturnVal")
+//    Call<List<AttendanceModel>> getButtonStatus(@Body JsonObject data);
 
     //ShfitConfig/SaveAttendance
     @POST("attendance/insert")
-    Call<String> getAttendanceDataSubmit(@Body JsonObject data);
+    Call<JsonObject> getAttendanceDataSubmit(@Body JsonObject data);
+
+
+
+    @POST("attendance/read")
+    Call<List<AttendanceModel>> getButtonStatus(@Body JsonObject data);
 
 
 
