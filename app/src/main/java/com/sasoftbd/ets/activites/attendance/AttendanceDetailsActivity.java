@@ -2,7 +2,10 @@ package com.sasoftbd.ets.activites.attendance;
 
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,7 +18,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.sasoftbd.ets.R;
+import com.sasoftbd.ets.utils.utils;
 import com.squareup.picasso.Picasso;
+
+import okhttp3.internal.Util;
 
 
 public class AttendanceDetailsActivity extends AppCompatActivity {
@@ -44,7 +50,7 @@ public class AttendanceDetailsActivity extends AppCompatActivity {
 
 
         TextView textView_DateTime = (TextView) findViewById(R.id.textView_DateTime);
-        textView_DateTime.setText(in.getStringExtra("strINSERT_DATE"));
+        textView_DateTime.setText(in.getStringExtra("strATTEN_TIMEIN")+" "+in.getStringExtra("strINSERT_DATE"));
 
 
         TextView textView_DateTimeShift = (TextView) findViewById(R.id.textView70);
@@ -70,34 +76,42 @@ public class AttendanceDetailsActivity extends AppCompatActivity {
         ImageView locationIcon = (ImageView) findViewById(R.id.imagePreview);
 
 
+        utils utils = new utils();
+
+
+        String base64ImageFromApi = in.getStringExtra("strEMP_IMAGE"); // API থেকে পাওয়া
+        utils.setImageFromBase64(base64ImageFromApi, locationIcon);
+
+
+//
 //        byte[] imageBytess = Base64.decode(in.getStringExtra("strEMP_IMAGE"), Base64.DEFAULT);
 //        Bitmap decodedImage = BitmapFactory.decodeByteArray(imageBytess, 0, imageBytess.length);
 //        locationIcon.setImageBitmap(decodedImage);
-
-        //Toast.makeText(this, "dsf" + in.getStringExtra("strEMP_IMAGE"), Toast.LENGTH_SHORT).show();
-
-
-        try {
-
-            Picasso.get()
-                    .load(in.getStringExtra("strEMP_IMAGE"))
-                    .placeholder(R.drawable.ic_approve_svg) // Optional placeholder
-                    .error(R.drawable.ic_approve_svg)             // Optional error image
-                    .into(locationIcon);
-
-
-            locationIcon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Toast.makeText(AttendanceDetailsActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
-
-                }
-            });
-
-
-        } catch (Exception e) {
-
-        }
+//
+//        Toast.makeText(this, "dsf" + in.getStringExtra("strEMP_IMAGE").substring(0,10), Toast.LENGTH_SHORT).show();
+//
+//
+//        try {
+//
+//            Picasso.get()
+//                    .load(in.getStringExtra("strEMP_IMAGE"))
+//                    .placeholder(R.drawable.ic_approve_svg) // Optional placeholder
+//                    .error(R.drawable.ic_approve_svg)             // Optional error image
+//                    .into(locationIcon);
+//
+//
+//            locationIcon.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    Toast.makeText(AttendanceDetailsActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
+//
+//                }
+//            });
+//
+//
+//        } catch (Exception e) {
+//
+//        }
 
 //
 //        Intent i = new Intent(AttendanceActivity.this, AttendanceDetailsActivity.class);
@@ -154,48 +168,9 @@ public class AttendanceDetailsActivity extends AppCompatActivity {
                 final ImageView imageView16;
                 imageView16 = (ImageView) dialogview.findViewById(R.id.imageView900);
 
-                //byte[] imageBytess = Base64.decode(in.getStringExtra("strEMP_IMAGE"), Base64.DEFAULT);
-                //Bitmap decodedImage = BitmapFactory.decodeByteArray(imageBytess, 0, imageBytess.length);
-                //imageView16.setImageBitmap(decodedImage);
-                //imageView16.setImageBitmap(decodedImage);
+                String base64ImageFromApi = in.getStringExtra("strEMP_IMAGE"); // API থেকে পাওয়া
+                utils.setImageFromBase64(base64ImageFromApi, imageView16);
 
-                //Button btnDone, deletebtn, cancelbtn;
-
-
-                try {
-
-                    Picasso.get()
-                            .load(in.getStringExtra("strEMP_IMAGE"))
-                            .placeholder(R.drawable.bgprogressbar) // Optional placeholder
-                            .error(R.drawable.bgprogressbar)             // Optional error image
-                            .into(imageView16);
-
-
-//                    locationIcon.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View view) {
-//                            Toast.makeText(AttendanceDetailsActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
-//
-//                        }
-//                    });
-
-
-                } catch (Exception e) {
-
-                }
-
-//
-//                itemQty = dialogview.findViewById(R.id.item_qty_et);
-//                itemPrice = dialogview.findViewById(R.id.item_rate_tv);
-//                itemName = dialogview.findViewById(R.id.item_name_view_Et);
-//                saveNotebtn = dialogview.findViewById(R.id.save_note_item_btn);
-//                deletebtn = dialogview.findViewById(R.id.delete_item_btn);
-//                cancelbtn = dialogview.findViewById(R.id.cancel_popup_btn);
-//
-//
-//                itemName.setText(itemlist.getStrItemName());
-//                itemQty.setText(String.valueOf(itemlist.getStrUnit()));
-//                itemPrice.setText(String.valueOf(itemlist.getDblClsBalance()));
 
             }
         });

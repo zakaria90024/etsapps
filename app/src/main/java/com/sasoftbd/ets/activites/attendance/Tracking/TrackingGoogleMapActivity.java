@@ -1,4 +1,4 @@
-package com.sasoftbd.ets.activites.attendance;
+package com.sasoftbd.ets.activites.attendance.Tracking;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
@@ -43,7 +43,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.sasoftbd.ets.Auth.Login.User;
 import com.sasoftbd.ets.R;
+import com.sasoftbd.ets.activites.attendance.PresenterAndView.AHInfoView;
+import com.sasoftbd.ets.activites.attendance.PresenterAndView.AHInfomPresenter;
+import com.sasoftbd.ets.activites.attendance.ResponseStatusModel;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -99,7 +103,7 @@ public class TrackingGoogleMapActivity extends AppCompatActivity implements OnMa
         ahInfomPresenter = new AHInfomPresenter(this);
 
         //trackingPresenter.getNoticeList("2025-02-13", "M-12382");
-        ahInfomPresenter.getAhINfo(new AuthPrefsDataClass(this).getUserId(), "");
+        ahInfomPresenter.getAhINfo();
 
         searchtv = findViewById(R.id.searchTv);
         floatingActionButton = findViewById(R.id.floatingActionButton);
@@ -317,7 +321,7 @@ public class TrackingGoogleMapActivity extends AppCompatActivity implements OnMa
 
         if (trackingListModel == null || trackingListModel == null) {
             Log.e("onTrackingList", "Received null trackingListModel or result!");
-            Toast.makeText(this, "null", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "null", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -369,12 +373,15 @@ public class TrackingGoogleMapActivity extends AppCompatActivity implements OnMa
     }
 
     @Override
-    public void onAHinfoStatus(List<AHinfoModel> allAHinfoList) {
+    public void onAHinfoStatus(List<User> allAHinfoList) {
 
         // Extract employee names from the list
         List<String> employeeNames = new ArrayList<>();
-        for (AHinfoModel model : allAHinfoList) {
-            employeeNames.add(model.getStrParticulars());
+        //employeeNames.add("zakaria123456");
+        //employeeNames.add("zakaria1234562");
+
+        for (User model : allAHinfoList) {
+            employeeNames.add(model.getCardNo()+" "+model.getUsername());
         }
 
         // Set up Spinner
@@ -389,11 +396,16 @@ public class TrackingGoogleMapActivity extends AppCompatActivity implements OnMa
                 // Get selected EmployeeName
                 String selectedEmployee = employeeNames.get(position);
                 // Find the corresponding CardNo
-                String selectedCardNo = allAHinfoList.get(position).getStrCardNO();
+                String selectedCardNo = allAHinfoList.get(position).getCardNo();
+                //String selectedCardNo = "M-10001";
+                //String date = "24-07-2025";
+
+                String[] date = date_selection.getText().toString().split("-");
 
                 // Show CardNo in Toast (or use as needed)
-                trackingPresenter.getNoticeList(date_selection.getText().toString(), selectedCardNo);
-                //Toast.makeText(getApplicationContext(), "CardNo: " + selectedCardNo + " date " + date_selection.getText().toString(), Toast.LENGTH_SHORT).show();
+                //trackingPresenter.getNoticeList(date_selection.getText().toString(), selectedCardNo);
+                trackingPresenter.getLocationUseWiseList(date[2]+"-"+date[1]+"-"+date[0], selectedCardNo);
+                Toast.makeText(getApplicationContext(), "CardNo: " + selectedCardNo + " date " + date_selection.getText().toString(), Toast.LENGTH_SHORT).show();
 
                 Log.d("fromtracking", "CardNo: " + selectedCardNo + " date " + date_selection.getText().toString());
 

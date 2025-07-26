@@ -1,9 +1,12 @@
-package com.sasoftbd.ets.activites.attendance;
+package com.sasoftbd.ets.activites.attendance.Tracking;
 
 
 
+import com.sasoftbd.ets.activites.attendance.ResponseStatusModel;
 import com.sasoftbd.ets.latlong.APIService;
 import com.sasoftbd.ets.network.ApiClient;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -24,19 +27,18 @@ public class TrackingPresenter {
     }
 
 
-    public void getNoticeList(String date, String empCardNo) {
+    public void getLocationUseWiseList(String date, String empCardNo) {
 
-
-        APIService apiService = RetrofitClientSecond.getClient().create(APIService.class);
-        Call<ResponseStatusModel> call = apiService.postLocationRead(date, empCardNo);
-        call.enqueue(new Callback<ResponseStatusModel>() {
+        APIService apiService = ApiClient.getRetrofit().create(APIService.class);
+        Call<List<ResponseStatusModel>> call = apiService.postLocationRead(date, empCardNo);
+        call.enqueue(new Callback<List<ResponseStatusModel>>() {
             @Override
-            public void onResponse(Call<ResponseStatusModel> call, Response<ResponseStatusModel> response) {
+            public void onResponse(Call<List<ResponseStatusModel>> call, Response<List<ResponseStatusModel>> response) {
                 mTrackingListView.onTrackingList(response.body());
             }
 
             @Override
-            public void onFailure(Call<ResponseStatusModel> call, Throwable t) {
+            public void onFailure(Call<List<ResponseStatusModel>> call, Throwable t) {
                 mTrackingListView.onErrorTourType(t.getMessage());
             }
         });

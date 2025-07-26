@@ -22,7 +22,7 @@ public class ApiClient {
 
     //ngrok http 8080
     //ngrok config add-authtoken 308QBurqWEW9kuBcsr8XMoxbEXQ_7ierBXaRLw4o2bPQgMANG
-    public static final String BASE_URL_SERVER = "https://109a9d0d8cb1.ngrok-free.app/api/";
+    public static final String BASE_URL_SERVER = "https://63215b8a4664.ngrok-free.app/api/";
     //public static final String BASE_URL_SERVER = "http://35.192.59.236:9191/api/";
 
 

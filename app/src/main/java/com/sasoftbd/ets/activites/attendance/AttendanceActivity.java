@@ -1016,19 +1016,27 @@ public class AttendanceActivity extends AppCompatActivity {
 //                            TypeUser = "TEAM";
 //                        }
 
+
                     String TypeUser = "USER";
 
                     String convertdis = "0";
 
-                    if (inORout.equals("OUT")) {
-                        try {
-                            dis = Distance.distance(Double.valueOf(attendanceModelsList.get(0).getStrLATITUDE()), Double.valueOf(lat), Double.valueOf(attendanceModelsList.get(0).getStrLONGITUDE()), Double.valueOf(lang));
-                            convertdis = String.valueOf(dis);
-                        } catch (Exception e) {
-                            convertdis = "0";
+                    try {
+
+                        if (inORout.equals("OUT")) {
+                            try {
+                                dis = Distance.distance(Double.valueOf(attendanceModelsList.get(0).getStrLATITUDE()), Double.valueOf(lat), Double.valueOf(attendanceModelsList.get(0).getStrLONGITUDE()), Double.valueOf(lang));
+                                convertdis = String.valueOf(dis);
+                            } catch (Exception e) {
+                                convertdis = "0";
+                            }
+
                         }
 
+                    }catch (Exception e){
+                        Toast.makeText(AttendanceActivity.this, "fail try again", Toast.LENGTH_SHORT).show();
                     }
+
 
                     sendDateToServer(authPrefsDataClass.getUserName(), TypeUser, CardNO, todayDateFormated, lat, lang, address, convertdis, comment.getText().toString(), "Pending", inORout, img);
 
@@ -1154,7 +1162,7 @@ public class AttendanceActivity extends AppCompatActivity {
         attendanceModel.setStrATTENCOMMENTS(strATTEN_COMMENTS);
         attendanceModel.setStrACTION(strACTION);
         attendanceModel.setStrATTENSTATUS(strATTEN_STATUS);
-        attendanceModel.setStrEMPIMAGE("dsf");//imageString
+        attendanceModel.setStrEMPIMAGE(imageString);//imageString
         attendanceModel.setAppsVersion(VersionCodeString);
 
         List<AttendanceModel> leaveList = new ArrayList<>();

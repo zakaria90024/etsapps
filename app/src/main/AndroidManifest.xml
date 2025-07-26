@@ -62,13 +62,11 @@
         <activity
             android:name=".Auth.Login.LoginJwtActivity"
             android:exported="true">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
 
         <activity
@@ -82,9 +80,8 @@
         </activity>
 
         <activity
-            android:name=".activites.attendance.TrackingGoogleMapActivity"
+            android:name=".activites.attendance.Tracking.TrackingGoogleMapActivity"
             android:exported="false">
-
 
         </activity>
 

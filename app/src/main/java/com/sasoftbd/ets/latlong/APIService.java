@@ -1,14 +1,18 @@
 package com.sasoftbd.ets.latlong;
 import com.google.gson.JsonObject;
+import com.sasoftbd.ets.Auth.Login.AccessModuleModel;
 import com.sasoftbd.ets.Auth.Login.LoginDetailsModel;
 import com.sasoftbd.ets.Auth.Login.TokenModel;
+import com.sasoftbd.ets.Auth.Login.User;
+import com.sasoftbd.ets.activites.attendance.ResponseStatusModel;
 import com.sasoftbd.ets.model.AttendanceModel;
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
-
+import retrofit2.http.Query;
 
 
 public interface APIService {
@@ -20,9 +24,22 @@ public interface APIService {
 
 
 
-    @POST("location/read?strEMP_CARD_NO=M-10001&insertDate=24-07-2025")
-    Call<String> postLocationRead(@Body JsonObject jsonObject);
+    @GET("location/read")
+    Call<List<ResponseStatusModel>> postLocationRead(
+            @Query("insertDate") String insertDate,
+            @Query("strEMP_CARD_NO") String strEMP_CARD_NO
+    );
 
+
+    @GET("auth/users/all/read")
+    Call<List<User>> getAllUsers();
+
+
+
+
+//    @POST("location/read?strEMP_CARD_NO=M-10001&insertDate=24-07-2025")
+//    Call<String> postLocationRead(@Body JsonObject jsonObject);
+//
 
 
     @POST("ShfitConfig/mPostForGetStatusLeaveAttendance")
