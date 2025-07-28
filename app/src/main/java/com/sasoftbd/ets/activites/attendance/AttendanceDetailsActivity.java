@@ -2,16 +2,12 @@ package com.sasoftbd.ets.activites.attendance;
 
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+
 import android.os.Bundle;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,9 +15,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.sasoftbd.ets.R;
 import com.sasoftbd.ets.utils.utils;
-import com.squareup.picasso.Picasso;
 
-import okhttp3.internal.Util;
 
 
 public class AttendanceDetailsActivity extends AppCompatActivity {
@@ -174,24 +168,6 @@ public class AttendanceDetailsActivity extends AppCompatActivity {
 
             }
         });
-
-
-//
-//
-//        Bundle bundle = new Bundle();
-//        bundle.putString("lat", "22.572645");
-//        bundle.putString("long", "88.363892");
-//        Fragment fragment = new MapsFragment();
-//        fragment.setArguments(bundle);
-
-
-//        Fragment fragmentt = new MapsFragment();
-//        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-//        fragmentTransaction.add(R.id.cons_layout, fragmentt);
-//        fragmentTransaction.commit();
-//
-////
-        //Intent in = new Intent(AttendanceDetailsActivity.this, MapsFragment.class);
 
 
     }

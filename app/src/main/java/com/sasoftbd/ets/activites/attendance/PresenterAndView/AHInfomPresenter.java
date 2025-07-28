@@ -30,15 +30,6 @@ public class AHInfomPresenter {
 
         APIService apiservice = ApiClient.getRetrofit().create(APIService.class);
 
-
-//        AHinfoModel aHinfoModel = new AHinfoModel();
-//        aHinfoModel.setStrCardNO("M-10001");
-//
-//        List<AccessModuleModel> ahinfoModelList = new ArrayList<>();
-//        ahinfoModelList.add(aHinfoModel);
-
-//        mAHInfoView.onAHinfoStatus(ahinfoModelList);
-
         Call<List<User>> call = apiservice.getAllUsers();
         call.enqueue(new Callback<List<User>>() {
             @Override

@@ -7,54 +7,224 @@
     android:layout_height="match_parent"
     tools:context=".chart.ChartActivity">
 
-
-    <LinearLayout
-        android:id="@+id/linearLayout3"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent">
 
-        <com.google.android.material.card.MaterialCardView
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="28dp"
-            app:cardElevation="1dp">
+            android:layout_height="match_parent">
+
 
             <LinearLayout
+                android:id="@+id/linearLayout3"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-                <!-- res/layout/activity_main.xml -->
-                <LinearLayout
-                    android:id="@+id/linearLayout"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:layout_height="wrap_content"
+                    android:layout_margin="28dp"
+                    app:cardElevation="1dp">
 
-                    <com.sasoftbd.ets.chart.DonutChartView
-                        android:id="@+id/donutChart"
-                        android:layout_width="300dp"
-                        android:layout_height="300dp" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+                        <!-- res/layout/activity_main.xml -->
+                        <LinearLayout
+                            android:id="@+id/linearLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="300dp"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
 
-                </LinearLayout>
+                            <com.sasoftbd.ets.chart.DonutChartView
+                                android:id="@+id/donutChart"
+                                android:layout_width="300dp"
+                                android:layout_height="300dp" />
+
+                        </LinearLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <LinearLayout
+                                android:id="@+id/linearLayout2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
+
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:orientation="horizontal"
+                                    android:padding="6dp"
+                                    app:layout_constraintBottom_toBottomOf="@+id/linearLayout2"
+                                    app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+
+                                    <TextView
+                                        android:id="@+id/textViewsdfs"
+                                        android:layout_width="20dp"
+                                        android:layout_height="20dp"
+
+                                        android:background="@drawable/circle_green"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+                                    <TextView
+                                        android:id="@+id/textView2dsfs"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="4dp"
+                                        android:text="Present: 339"
+                                        app:layout_constraintBottom_toBottomOf="@+id/textView"
+                                        app:layout_constraintStart_toEndOf="@+id/textView"
+                                        app:layout_constraintTop_toTopOf="@+id/textView" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:orientation="horizontal"
+                                    android:padding="6dp"
+                                    app:layout_constraintBottom_toBottomOf="@+id/linearLayout2"
+                                    app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+
+                                    <TextView
+                                        android:id="@+id/textViewdsf"
+                                        android:layout_width="20dp"
+                                        android:layout_height="20dp"
+
+                                        android:background="@drawable/circle_red"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+                                    <TextView
+                                        android:id="@+id/textView2sdf"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="4dp"
+                                        android:text="Absent: 21"
+                                        app:layout_constraintBottom_toBottomOf="@+id/textView"
+                                        app:layout_constraintStart_toEndOf="@+id/textView"
+                                        app:layout_constraintTop_toTopOf="@+id/textView" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:orientation="horizontal"
+                                    android:padding="6dp"
+                                    app:layout_constraintBottom_toBottomOf="@+id/linearLayout2"
+                                    app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+
+                                    <TextView
+                                        android:id="@+id/textView"
+                                        android:layout_width="20dp"
+                                        android:layout_height="20dp"
+
+                                        android:background="@drawable/circle_black"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+                                    <TextView
+                                        android:id="@+id/textView2"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="4dp"
+                                        android:text="Leave: 15"
+                                        app:layout_constraintBottom_toBottomOf="@+id/textView"
+                                        app:layout_constraintStart_toEndOf="@+id/textView"
+                                        app:layout_constraintTop_toTopOf="@+id/textView" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/linearLayoust3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="28dp"
+                    app:cardElevation="1dp">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+
+                        <!-- Y Axis on the left, fixed -->
+                        <com.sasoftbd.ets.chart.YAxisView
+                            android:id="@+id/yAxisView"
+                            android:layout_width="60dp"
+                            android:layout_height="300dp" />
+
+                        <!-- Scrollable chart on the right -->
+                        <HorizontalScrollView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:scrollbars="none">
+
+                            <com.sasoftbd.ets.chart.SalesChartView
+                                android:id="@+id/salesChartView"
+                                android:layout_width="1000dp"
+                                android:layout_height="300dp" />
+                        </HorizontalScrollView>
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
                     <LinearLayout
-                        android:id="@+id/linearLayout2"
+                        android:id="@+id/linearLayoudt2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
+                        android:orientation="horizontal"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -72,20 +242,19 @@
 
 
                             <TextView
-                                android:id="@+id/textViewsdfs"
+                                android:id="@+id/textVdiewsdfs"
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
-
-                                android:background="@drawable/circle_green"
+                                android:background="#0000FD"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
                             <TextView
-                                android:id="@+id/textView2dsfs"
+                                android:id="@+id/textViedw2dsfs"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="4dp"
-                                android:text="Present: 339"
+                                android:text="Sales"
                                 app:layout_constraintBottom_toBottomOf="@+id/textView"
                                 app:layout_constraintStart_toEndOf="@+id/textView"
                                 app:layout_constraintTop_toTopOf="@+id/textView" />
@@ -102,20 +271,19 @@
 
 
                             <TextView
-                                android:id="@+id/textViewdsf"
+                                android:id="@+id/textVdiewdsf"
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
-
-                                android:background="@drawable/circle_red"
+                                android:background="#FD0000"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
                             <TextView
-                                android:id="@+id/textView2sdf"
+                                android:id="@+id/textView2sddf"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="4dp"
-                                android:text="Absent: 21"
+                                android:text="Collection"
                                 app:layout_constraintBottom_toBottomOf="@+id/textView"
                                 app:layout_constraintStart_toEndOf="@+id/textView"
                                 app:layout_constraintTop_toTopOf="@+id/textView" />
@@ -132,20 +300,19 @@
 
 
                             <TextView
-                                android:id="@+id/textView"
+                                android:id="@+id/texdtView"
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
-
-                                android:background="@drawable/circle_black"
+                                android:background="#00FD00"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
                             <TextView
-                                android:id="@+id/textView2"
+                                android:id="@+id/textVidew2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="4dp"
-                                android:text="Leave: 15"
+                                android:text="Target"
                                 app:layout_constraintBottom_toBottomOf="@+id/textView"
                                 app:layout_constraintStart_toEndOf="@+id/textView"
                                 app:layout_constraintTop_toTopOf="@+id/textView" />
@@ -153,21 +320,8 @@
 
                     </LinearLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
-
             </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 
-        </com.google.android.material.card.MaterialCardView>
-
-
-    </LinearLayout>
-
-    <com.google.android.material.button.MaterialButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:elevation="22dp"
-        android:text="Submit"
-        app:layout_constraintBottom_toBottomOf="@+id/linearLayout3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

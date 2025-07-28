@@ -21,14 +21,12 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -53,7 +51,6 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
-import com.google.android.gms.location.LocationSettingsStates;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -94,7 +91,7 @@ public class AttendanceActivity extends AppCompatActivity {
     private static final int FAST_UPDATE_INTERVAL = 100;
     private static final int DEFAULT_UPDATE_INTERVAL = 100;
     private static final int PERMISSION_FINE_LOCATION = 99;
-    static String cardNo;
+
     double dis;
     //LeaveListPresenter leaveListPresenter;
     String todayDateFormated, todayShowDate, todayDateTime;
@@ -177,10 +174,7 @@ public class AttendanceActivity extends AppCompatActivity {
             try {
                 PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
                 VersionCodeString = String.valueOf(packageInfo.versionCode);    // Deprecated in API 28+
-                //VersionCodeString = packageInfo.versionName;
 
-                //Log.d("AppVersion", "Version Code: " + versionCode);
-                //Log.d("AppVersion", "Version Name: " + versionName);
             } catch (PackageManager.NameNotFoundException e) {
                 e.printStackTrace();
             }
@@ -416,37 +410,6 @@ public class AttendanceActivity extends AppCompatActivity {
             }
         });
 
-
-//        LeaveParamaterModel leaveListModel = new LeaveParamaterModel();
-//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-//        String CardNo = preferences.getString("CardNo", "");
-//        leaveListModel.setStrEMPCARDNO(CardNo);
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // Date format
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.set(Calendar.DAY_OF_MONTH, 1);
-//        String startDate = dateFormat.format(calendar.getTime()); // Start date of the month
-//        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
-//        String endDate = dateFormat.format(calendar.getTime()); // End date of the month
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-//        Date today = new Date();
-//        String formattedDate = sdf.format(today);
-//        System.out.println("Formatted date: " + formattedDate);
-//
-//
-//        Log.d("DateRange", "Start of the month: " + startDate);
-//        Log.d("DateRange", "End of the month: " + endDate);
-//        // You can also set these dates in your model if needed
-//        leaveListModel.setStrFROMDATE(formattedDate);
-//        leaveListModel.setStrTODATE(formattedDate);
-//        Gson gson = new Gson();
-//        String json = gson.toJson(leaveListModel);
-//        JsonObject jsonObject = null;
-//        jsonObject = new JsonParser().parse(json).getAsJsonObject();
-//        leaveListPresenter = new LeaveListPresenter(AttendanceActivity.this);
-//        leaveListPresenter.getLaveList(jsonObject);
-//        Log.d("hello", "" + jsonObject);
-
-
     }
 
     private void btnRefressh() {
@@ -588,10 +551,6 @@ public class AttendanceActivity extends AppCompatActivity {
     private void initt() {
 
 
-//        attendancePresenter = new AttendancePresenter(AttendanceActivity.this);
-//        attendancePresenter.getChallanData();
-//        cardNoPresenter = new CardNoPresenter(AttendanceActivity.this);
-        //cardNoPresenter.getCardData();
         locationRequest = new LocationRequest();
         locationRequest.setInterval(100 * DEFAULT_UPDATE_INTERVAL);
         locationRequest.setFastestInterval(100 * FAST_UPDATE_INTERVAL);
@@ -994,31 +953,7 @@ public class AttendanceActivity extends AppCompatActivity {
                     String lat = sharedPref.getString("lat", "");
                     String lang = sharedPref.getString("lang", "");
                     String address = sharedPref.getString("address", "");
-
-//                    int userType = ;
-//                        String TypeUser = "";
-//
-//                        if (userType == 0) {
-//                            if (new AuthPrefsDataClass(getApplicationContext()).getRole().equals("ZH")) {
-//                                TypeUser = "ZH";
-//                            } else {
-//                                TypeUser = "MPO";
-//                            }
-//                        } else if (userType == 1) {
-//                            TypeUser = "AH";
-//                        } else if (userType == 2) {
-//                            TypeUser = "DH";
-//                        } else if (userType == 4) {
-//                            TypeUser = "DIST";
-//                        } else if (userType == 5) {
-//                            TypeUser = "SR";
-//                        } else if (userType == 6) {
-//                            TypeUser = "TEAM";
-//                        }
-
-
                     String TypeUser = "USER";
-
                     String convertdis = "0";
 
                     try {
@@ -1145,17 +1080,16 @@ public class AttendanceActivity extends AppCompatActivity {
             return;
         }
 
-//        if (strEMP_CARD_NO.isEmpty()) {
-//            Toast.makeText(this, "Your CardNo Not Found", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
+        if (strEMP_CARD_NO.isEmpty()) {
+            Toast.makeText(this, "Your CardNo Not Found", Toast.LENGTH_SHORT).show();
+            return;
+        }
         attendanceModel.setStrUSERNAME(strUSER_NAME);
         attendanceModel.setStrROLE(strROLE);
         attendanceModel.setStrEMPCARDNO(strEMP_CARD_NO);
         attendanceModel.setStrATTENDATEIN(strATTEN_DATEIN);
         attendanceModel.setStrLATITUDE(strLATITUDE);
         attendanceModel.setStrLONGITUDE(strLONGITUDE);
-
         attendanceModel.setStrADDRESS(strADDRESS);
         attendanceModel.setIntDISTANCE(intDISTANCE);
         attendanceModel.setStrATTENSHIFT("");
@@ -1220,93 +1154,6 @@ public class AttendanceActivity extends AppCompatActivity {
     }
 
 
-//    //it is shift url callback
-//    @Override
-//    public void onAttendance(List<AttendanceShiftModel> attendanceShiftModelsList) {
-//
-//        try {
-//            statusRefresh();
-//            if (attendanceShiftModelsList.size() > 0) {
-//
-//            } else {
-//                constraintLayoutOut.setVisibility(View.GONE);
-//                constraintLayoudftdf7IN.setVisibility(View.GONE);
-//            }
-//            leaveList.add(0, "--Select Shift--");
-//
-//            for (int a = 1; a < attendanceShiftModelsList.size() + 1; a++) {
-//                leaveList.add(a, attendanceShiftModelsList.get(a - 1).getStrShiftName().trim());
-//            }
-//
-//            ArrayAdapter<String> arrayAdapterr = new ArrayAdapter<String>(AttendanceActivity.this, android.R.layout.simple_spinner_item, leaveList);
-//            arrayAdapterr.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//            spinner.setAdapter(arrayAdapterr);
-//
-//
-//        } catch (Exception e) {
-//            constraintLayoutOut.setVisibility(View.GONE);
-//            constraintLayoudftdf7IN.setVisibility(View.GONE);
-//        }
-//    }
-//
-//    @Override
-//    public void onLeaveList(List<LeaveListModel> leaveListModels) {
-//
-//        try {
-//
-//
-//            for (int a = 0; a < leaveListModels.size(); a++) {
-//                if (leaveListModels.get(a).getIntBLEAVEKEY().equals("")) {
-//                    btnIN.setClickable(true);
-//                    btnIN.setBackgroundResource(R.color.colorPrimaryDark);
-//
-//                }
-//            }
-//
-//
-//            for (int a = 0; a < leaveListModels.size(); a++) {
-//                if (leaveListModels.get(a).getStrEMPCARDNO().equals(CardNO)) {
-//                    btnIN.setClickable(false);
-//                    btnIN.setBackgroundResource(R.color.gray_btn_bg_color);
-//
-//                }
-//            }
-//
-//        } catch (Exception e) {
-//
-//        }
-//    }
-//
-//    @Override
-//    public void onError(String error) {
-//
-//    }
-
-//    @Override
-//    public void onCardNo(List<CardNoModel> cardNoModels) {
-//        try {
-//            cardNo = cardNoModels.get(0).getStrEMPCARDNO();
-//        } catch (Exception e) {
-//            Toast.makeText(this, "Card Number Not Found", Toast.LENGTH_LONG).show();
-//        }
-//    }
-//
-//    @Override
-//    public void onErrorCard(String error) {
-//
-//    }
-
-
-//    public void ClickApprove(View view) {
-//        startActivity(new Intent(AttendanceActivity.this, ApproveMasterActivity.class));
-//        this.overridePendingTransition(0, 0);
-//    }
-
-//    public void ClickAttendanceSummery(View view) {
-//        startActivity(new Intent(AttendanceActivity.this, AttendanceSummeryActivity.class));
-//        this.overridePendingTransition(0, 0);
-//    }
-
 
     @Override
     protected void onResume() {
@@ -1360,223 +1207,6 @@ public class AttendanceActivity extends AppCompatActivity {
     }
 
 
-    //for phone image issue ========================================================================
-//    private void checkPermissionAndTakePhoto() {
-//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 100);
-//        } else {
-//            dispatchTakePictureIntent();
-//        }
-//    }
-//
-//    private void dispatchTakePictureIntent() {
-//        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//
-//        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-//            File photoFile = null;
-//            try {
-//                photoFile = createImageFile();
-//            } catch (IOException ex) {
-//                Toast.makeText(this, "ফাইল তৈরি হয়নি!", Toast.LENGTH_SHORT).show();
-//            }
-//
-//            if (photoFile != null) {
-//                photoURI = FileProvider.getUriForFile(this,
-//                        getPackageName() + ".provider",
-//                        photoFile);
-//                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-//                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-//            }
-//        }
-//    }
-//
-//    private File createImageFile() throws IOException {
-//        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-//        String imageFileName = "JPEG_" + timeStamp + "_";
-//        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-//        return File.createTempFile(imageFileName, ".jpg", storageDir);
-//    }
-//
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-//            try {
-//                Bitmap imageBitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(photoURI));
-//                String imgText = getTextFromImage(imageBitmap); // এখানে OCR ফাংশন কল
-//                showCommentDialog(imgText);
-//            } catch (FileNotFoundException e) {
-//                Toast.makeText(this, "ছবি পাওয়া যায়নি", Toast.LENGTH_SHORT).show();
-//            }
-//        } else {
-//            Toast.makeText(this, "ছবি নিতে ব্যর্থ হয়েছে", Toast.LENGTH_SHORT).show();
-//        }
-//    }
-//
-//    private void showCommentDialog(String imgText) {
-//        AlertDialog.Builder itemDialog = new AlertDialog.Builder(AttendanceActivity.this);
-//        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        itemDialog.setCancelable(false);
-//        final View itemdialogview = inflater.inflate(R.layout.comment_layour, null);
-//
-//        EditText comment = itemdialogview.findViewById(R.id.editTextTextComment);
-//        TextView btnCommentSave = itemdialogview.findViewById(R.id.buttonCommentSave);
-//        TextView btnCancel = itemdialogview.findViewById(R.id.textView76);
-//
-//        itemDialog.setView(itemdialogview);
-//        final AlertDialog alertDialog = itemDialog.create();
-//        alertDialog.show();
-//
-//        btnCommentSave.setOnClickListener(v -> {
-//            String userComment = comment.getText().toString().trim();
-//            if (!userComment.isEmpty()) {
-//                Toast.makeText(this, "Saved: " + userComment, Toast.LENGTH_SHORT).show();
-//                alertDialog.dismiss();
-//            } else {
-//                Toast.makeText(this, "মন্তব্য লিখুন", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//
-//        btnCancel.setOnClickListener(v -> alertDialog.dismiss());
-//    }
-
-
-//    public void forceGpsON() {
-//
-//        LocationRequest locationRequest1 = LocationRequest.create();
-//        locationRequest1.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-//        locationRequest1.setInterval(10000);
-//        locationRequest1.setFastestInterval(10000 / 2);
-//        LocationSettingsRequest.Builder locationSettingBuilder = new LocationSettingsRequest.Builder();
-//        locationSettingBuilder.addLocationRequest(locationRequest1);
-//        locationSettingBuilder.setAlwaysShow(true);
-//        SettingsClient settingsClient = LocationServices.getSettingsClient(this);
-//        Task<LocationSettingsResponse> task = settingsClient.checkLocationSettings(locationSettingBuilder.build());
-//        task.addOnSuccessListener(this, new OnSuccessListener<LocationSettingsResponse>() {
-//            @Override
-//            public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
-//
-//                //updateGPS();
-//
-//            }
-//        });
-//
-//
-//        task.addOnCompleteListener(new OnCompleteListener<LocationSettingsResponse>() {
-//            @Override
-//            public void onComplete(@NonNull Task<LocationSettingsResponse> task) {
-//                try {
-//                    LocationSettingsResponse response = task.getResult(ApiException.class);
-//                    // All location settings are satisfied. The client can initialize location
-//                    // requests here.
-//                } catch (ApiException exception) {
-//                    switch (exception.getStatusCode()) {
-//                        case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
-//                            // Location settings are not satisfied. But could be fixed by showing the
-//                            // user a dialog.
-//                            try {
-//                                // Cast to a resolvable exception.
-//                                ResolvableApiException resolvable = (ResolvableApiException) exception;
-//                                // Show the dialog by calling startResolutionForResult(),
-//                                // and check the result in onActivityResult().
-//                                resolvable.startResolutionForResult(
-//                                        AttendanceActivity.this,
-//                                        101);
-//                            } catch (IntentSender.SendIntentException e) {
-//                                // Ignore the error.
-//                            } catch (ClassCastException e) {
-//                                // Ignore, should be an impossible error.
-//                            }
-//                            break;
-//                        case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-//                            // Location settings are not satisfied. However, we have no way to fix the
-//                            // settings so we won't show the dialog.
-//                            break;
-//                    }
-//                }
-//            }
-//        });
-//
-//
-//    }
-
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        //it work for location get and
-//        final LocationSettingsStates states = LocationSettingsStates.fromIntent(data);
-//        switch (requestCode) {
-//            case 101:
-//                switch (resultCode) {
-//                    case Activity.RESULT_OK:
-//                        break;
-//                    case Activity.RESULT_CANCELED:
-//                        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                switch (which) {
-//                                    case DialogInterface.BUTTON_POSITIVE:
-//                                        forceGpsON();
-//                                        break;
-//
-//                                    case DialogInterface.BUTTON_NEGATIVE:
-//                                        ActivityCompat.finishAffinity(AttendanceActivity.this);
-//                                        break;
-//                                }
-//                            }
-//                        };
-//
-//                        AlertDialog.Builder builder = new AlertDialog.Builder(AttendanceActivity.this);
-//                        builder.setMessage("Location is Mandatory").setPositiveButton("Try Again", dialogClickListener)
-//                                .setNegativeButton("Exit", dialogClickListener).show();
-//                        break;
-//                    default:
-//                        break;
-//                }
-//                break;
-//        }
-//
-//
-//    }
-
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        // Existing code...
-//
-//        if (requestCode == 101) {
-//            if (resultCode == Activity.RESULT_OK) {
-//                // GPS enabled by user
-//            } else if (resultCode == Activity.RESULT_CANCELED) {
-//                // GPS not enabled
-//                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        switch (which) {
-//                            case DialogInterface.BUTTON_POSITIVE:
-//                                forceGpsON();
-//                                break;
-//
-//                            case DialogInterface.BUTTON_NEGATIVE:
-//                                ActivityCompat.finishAffinity(AttendanceActivity.this);
-//                                break;
-//                        }
-//                    }
-//                };
-//
-//                AlertDialog.Builder builder = new AlertDialog.Builder(AttendanceActivity.this);
-//                builder.setMessage("Location is Mandatory")
-//                        .setPositiveButton("Try Again", dialogClickListener)
-//                        .setNegativeButton("Exit", dialogClickListener)
-//                        .show();
-//            }
-//        }
-//    }
 
 
 }

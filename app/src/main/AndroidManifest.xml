@@ -13,8 +13,7 @@
     <uses-permission
         android:name="android.permission.CAMERA"
         android:required="true"
-        android:requiredFeature="true"
-        tools:targetApi="26" />
+        android:requiredFeature="true" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
@@ -50,10 +49,24 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".stadium.TicketActivity"
-            android:exported="false">
+            android:name=".custom_pdf_viewer.PdfViewerCustomActivity"
+            android:exported="false" >
 
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.VIEW" />-->
+<!--                <category android:name="android.intent.category.DEFAULT" />-->
+<!--                <category android:name="android.intent.category.BROWSABLE" />-->
+
+<!--                &lt;!&ndash; PDF MIME type &ndash;&gt;-->
+<!--                <data android:mimeType="application/pdf" />-->
+<!--                &lt;!&ndash; PDF File extension &ndash;&gt;-->
+<!--                <data android:scheme="file" />-->
+<!--                <data android:scheme="content" />-->
+<!--            </intent-filter>-->
         </activity>
+        <activity
+            android:name=".stadium.TicketActivity"
+            android:exported="false"></activity>
         <activity
             android:name=".chart.ChartActivity"
             android:exported="true">
@@ -62,31 +75,22 @@
         <activity
             android:name=".Auth.Login.LoginJwtActivity"
             android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".activites.attendance.AttendanceActivity"
-            android:exported="false">
-
-
-        </activity>
-
+            android:exported="false"></activity>
         <activity
             android:name=".activites.attendance.Tracking.TrackingGoogleMapActivity"
-            android:exported="false">
-
-        </activity>
-
-        <activity android:name=".activites.attendance.GoogleMapActivity"/>
-
+            android:exported="false"></activity>
+        <activity android:name=".activites.attendance.GoogleMapActivity" />
         <activity
             android:name=".activites.attendance.AttendanceDetailsActivity"
             android:exported="false" />
@@ -100,7 +104,6 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBe7gVeZi9AQDa3VequhQwhJUzyutvHs2Q" />
-
     </application>
 
 </manifest>
