@@ -798,12 +798,12 @@ public class AttendanceActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        //startActivity(new Intent(this, MainActivity.class));
-        //this.overridePendingTransition(R.anim.abc_popup_enter, R.anim.abc_popup_exit);
-    }
+//    @Override
+//    public void onBackPressed() {
+//        super.onBackPressed();
+//        //startActivity(new Intent(this, MainActivity.class));
+//        //this.overridePendingTransition(R.anim.abc_popup_enter, R.anim.abc_popup_exit);
+//    }
 
 
     @Override
@@ -845,8 +845,8 @@ public class AttendanceActivity extends AppCompatActivity {
 
                         updateGPS();
                         startLocationUpdate();
-
                         break;
+
                     case Activity.RESULT_CANCELED:
 
                         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
@@ -865,6 +865,7 @@ public class AttendanceActivity extends AppCompatActivity {
                                 }
                             }
                         };
+
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(AttendanceActivity.this);
                         builder.setMessage("Location is Mandatory").setPositiveButton("Try Again", dialogClickListener)

@@ -74,12 +74,12 @@ public class LoginJwtActivity extends AppCompatActivity {
 
 
                 JsonObject requestData = new JsonObject();
-                requestData.addProperty("username", "zakaria123456");
-                requestData.addProperty("password", "12345678156");
+//                requestData.addProperty("username", "zakaria123456");
+//                requestData.addProperty("password", "12345678156");
 
 
-                //requestData.addProperty("username", username);
-                //requestData.addProperty("password", password);
+                requestData.addProperty("username", username);
+                requestData.addProperty("password", password);
 
 
                 Log.d("hello ", "" + requestData);

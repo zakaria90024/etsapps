@@ -49,35 +49,40 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".vpn.VPNActivity"
+            android:exported="true">
+
+
+        </activity>
+        <activity
             android:name=".custom_pdf_viewer.PdfViewerCustomActivity"
-            android:exported="false" >
+            android:exported="false">
 
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.VIEW" />-->
-<!--                <category android:name="android.intent.category.DEFAULT" />-->
-<!--                <category android:name="android.intent.category.BROWSABLE" />-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.VIEW" /> -->
+            <!-- <category android:name="android.intent.category.DEFAULT" /> -->
+            <!-- <category android:name="android.intent.category.BROWSABLE" /> -->
 
-<!--                &lt;!&ndash; PDF MIME type &ndash;&gt;-->
-<!--                <data android:mimeType="application/pdf" />-->
-<!--                &lt;!&ndash; PDF File extension &ndash;&gt;-->
-<!--                <data android:scheme="file" />-->
-<!--                <data android:scheme="content" />-->
-<!--            </intent-filter>-->
+
+            <!-- &lt;!&ndash; PDF MIME type &ndash;&gt; -->
+            <!-- <data android:mimeType="application/pdf" /> -->
+            <!-- &lt;!&ndash; PDF File extension &ndash;&gt; -->
+            <!-- <data android:scheme="file" /> -->
+            <!-- <data android:scheme="content" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".stadium.TicketActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".chart.ChartActivity"
-            android:exported="true">
-
-        </activity>
+            android:exported="true"></activity>
         <activity
             android:name=".Auth.Login.LoginJwtActivity"
             android:exported="true">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -86,10 +91,10 @@
             android:exported="false" />
         <activity
             android:name=".activites.attendance.AttendanceActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".activites.attendance.Tracking.TrackingGoogleMapActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity android:name=".activites.attendance.GoogleMapActivity" />
         <activity
             android:name=".activites.attendance.AttendanceDetailsActivity"
@@ -100,6 +105,17 @@
             android:enabled="true"
             android:foregroundServiceType="location"
             android:permission="android.permission.BIND_JOB_SERVICE" />
+
+
+        <service
+            android:name=".vpn.MyVpnService"
+            android:permission="android.permission.BIND_VPN_SERVICE"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.net.VpnService" />
+            </intent-filter>
+        </service>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
